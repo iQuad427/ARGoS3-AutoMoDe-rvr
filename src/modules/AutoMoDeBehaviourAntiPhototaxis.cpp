@@ -1,29 +1,31 @@
 /**
-  * @file <src/modules/AutoMoDeBehaviourAntiPhototaxis.cpp>
-  *
-  * @author Antoine Ligot - <aligot@ulb.ac.be>
-  *
-  * @package ARGoS3-AutoMoDe
-  *
-  * @license MIT License
-  */
+ * @file <src/modules/AutoMoDeBehaviourAntiPhototaxis.cpp>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
+ */
 
 #include "AutoMoDeBehaviourAntiPhototaxis.h"
 
-
-namespace argos {
+namespace argos
+{
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAntiPhototaxis::AutoMoDeBehaviourAntiPhototaxis() {
+	AutoMoDeBehaviourAntiPhototaxis::AutoMoDeBehaviourAntiPhototaxis()
+	{
 		m_strLabel = "Anti-Phototaxis";
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAntiPhototaxis::AutoMoDeBehaviourAntiPhototaxis(AutoMoDeBehaviourAntiPhototaxis* pc_behaviour) {
+	AutoMoDeBehaviourAntiPhototaxis::AutoMoDeBehaviourAntiPhototaxis(AutoMoDeBehaviourAntiPhototaxis *pc_behaviour)
+	{
 		m_strLabel = pc_behaviour->GetLabel();
 		m_bLocked = pc_behaviour->IsLocked();
 		m_bOperational = pc_behaviour->IsOperational();
@@ -41,25 +43,30 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAntiPhototaxis* AutoMoDeBehaviourAntiPhototaxis::Clone() {
+	AutoMoDeBehaviourAntiPhototaxis *AutoMoDeBehaviourAntiPhototaxis::Clone()
+	{
 		return new AutoMoDeBehaviourAntiPhototaxis(this);
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAntiPhototaxis::ControlStep() {
-		CVector2 sResultVector(0,CRadians::ZERO);
-		CVector2 sLightVector(0,CRadians::ZERO);
-		CVector2 sProxVector(0,CRadians::ZERO);
+	void AutoMoDeBehaviourAntiPhototaxis::ControlStep()
+	{
+		CVector2 sResultVector(0, CRadians::ZERO);
+		// to check : assess the angle of the light sensor
+		CVector2 sLightVector(0, CRadians::ZERO);
+		CVector2 sProxVector(0, CRadians::ZERO);
 
-		CCI_EPuckLightSensor::SReading cLightReading = m_pcRobotDAO->GetLightReading();
-		sLightVector = CVector2(cLightReading.Value, cLightReading.Angle);
+		CCI_RVRLightSensor::SReading cLightReading = m_pcRobotDAO->GetLightReading();
+		// sLightVector = CVector2(cLightReading.Value, cLightReading.Angle);
+		sLightVector.SetX(cLightReading.Value);
 
 		sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
-		sResultVector = -sLightVector - 5*sProxVector;
+		sResultVector = -sLightVector - 5 * sProxVector;
 
-		if (sResultVector.Length() < 0.1) {
+		if (sResultVector.Length() < 0.1)
+		{
 			sResultVector = CVector2(1, CRadians::ZERO);
 		}
 
@@ -76,7 +83,8 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAntiPhototaxis::Reset() {
+	void AutoMoDeBehaviourAntiPhototaxis::Reset()
+	{
 		m_bOperational = false;
 		ResumeStep();
 	}
@@ -84,7 +92,8 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAntiPhototaxis::ResumeStep() {
+	void AutoMoDeBehaviourAntiPhototaxis::ResumeStep()
+	{
 		m_bOperational = true;
 	}
 }

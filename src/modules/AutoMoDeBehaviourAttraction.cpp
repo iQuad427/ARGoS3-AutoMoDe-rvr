@@ -1,29 +1,31 @@
 /**
-  * @file <src/modules/AutoMoDeBehaviourAttraction.cpp>
-  *
-  * @author Antoine Ligot - <aligot@ulb.ac.be>
-  *
-  * @package ARGoS3-AutoMoDe
-  *
-  * @license MIT License
-  */
+ * @file <src/modules/AutoMoDeBehaviourAttraction.cpp>
+ *
+ * @author Antoine Ligot - <aligot@ulb.ac.be>
+ *
+ * @package ARGoS3-AutoMoDe
+ *
+ * @license MIT License
+ */
 
 #include "AutoMoDeBehaviourAttraction.h"
 
-
-namespace argos {
+namespace argos
+{
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction::AutoMoDeBehaviourAttraction() {
+	AutoMoDeBehaviourAttraction::AutoMoDeBehaviourAttraction()
+	{
 		m_strLabel = "Attraction";
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction::AutoMoDeBehaviourAttraction(AutoMoDeBehaviourAttraction* pc_behaviour) {
+	AutoMoDeBehaviourAttraction::AutoMoDeBehaviourAttraction(AutoMoDeBehaviourAttraction *pc_behaviour)
+	{
 		m_strLabel = pc_behaviour->GetLabel();
 		m_bLocked = pc_behaviour->IsLocked();
 		m_bOperational = pc_behaviour->IsOperational();
@@ -41,27 +43,31 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeBehaviourAttraction* AutoMoDeBehaviourAttraction::Clone() {
-		return new AutoMoDeBehaviourAttraction(this);   // todo: check without *
+	AutoMoDeBehaviourAttraction *AutoMoDeBehaviourAttraction::Clone()
+	{
+		return new AutoMoDeBehaviourAttraction(this); // todo: check without *
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::ControlStep() {
-		CVector2 sRabVector(0,CRadians::ZERO);
-		CVector2 sProxVector(0,CRadians::ZERO);
-		CVector2 sResultVector(0,CRadians::ZERO);
-		CCI_EPuckRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetAttractionVectorToNeighbors(m_unAttractionParameter);
+	void AutoMoDeBehaviourAttraction::ControlStep()
+	{
+		CVector2 sRabVector(0, CRadians::ZERO);
+		CVector2 sProxVector(0, CRadians::ZERO);
+		CVector2 sResultVector(0, CRadians::ZERO);
+		auto cLidarReading = m_pcRobotDAO->GetAttractionVectorToNeighbors(m_unAttractionParameter);
 
-		if (cRabReading.Range > 0.0f) {
-			sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
+		if (cLidarReading.Value > 0.0f)
+		{
+			sRabVector = CVector2(cLidarReading.Value, cLidarReading.Angle);
 		}
 
 		sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
-		sResultVector = sRabVector - 6*sProxVector;
+		sResultVector = sRabVector - 6 * sProxVector;
 
-		if (sResultVector.Length() < 0.1) {
+		if (sResultVector.Length() < 0.1)
+		{
 			sResultVector = CVector2(1, CRadians::ZERO);
 		}
 
@@ -73,11 +79,15 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::Init() {
+	void AutoMoDeBehaviourAttraction::Init()
+	{
 		std::map<std::string, Real>::iterator it = m_mapParameters.find("att");
-		if (it != m_mapParameters.end()) {
+		if (it != m_mapParameters.end())
+		{
 			m_unAttractionParameter = it->second;
-		} else {
+		}
+		else
+		{
 			LOGERR << "[FATAL] Missing parameter for the following behaviour:" << m_strLabel << std::endl;
 			THROW_ARGOSEXCEPTION("Missing Parameter");
 		}
@@ -86,7 +96,8 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::Reset() {
+	void AutoMoDeBehaviourAttraction::Reset()
+	{
 		m_bOperational = false;
 		ResumeStep();
 	}
@@ -94,7 +105,8 @@ namespace argos {
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeBehaviourAttraction::ResumeStep() {
+	void AutoMoDeBehaviourAttraction::ResumeStep()
+	{
 		m_bOperational = true;
 	}
 }
