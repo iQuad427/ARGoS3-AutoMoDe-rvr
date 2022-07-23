@@ -18,7 +18,7 @@ namespace argos
 
 	AutoMoDeController::AutoMoDeController()
 	{
-		m_pcRobotState = new ReferenceModel1Dot1();
+		m_pcRobotState = new ReferenceModel1Dot2();
 		m_unTimeStep = 0;
 		m_strFsmConfiguration = "";
 		m_bMaintainHistory = false;
@@ -92,6 +92,7 @@ namespace argos
 			m_pcLightSensor = GetSensor<CCI_RVRLightSensor>("rvr_light");
 			m_pcGroundSensor = GetSensor<CCI_RVRGroundColorSensor>("rvr_ground");
 			m_pcLidarSensor = GetSensor<CCI_RVRLidarSensor>("rvr_lidar");
+			m_pcOmnidirectionalCameraSensor = GetSensor<CCI_ColoredBlobOmnidirectionalCameraSensor>("colored_blob_omnidirectional_camera");
 		}
 		catch (CARGoSException ex)
 		{
@@ -140,6 +141,11 @@ namespace argos
 		{
 			const CCI_RVRLidarSensor::TReadings &readings = m_pcLidarSensor->GetReadings();
 			m_pcRobotState->SetLidarInput(readings);
+		}
+		if (m_pcOmnidirectionalCameraSensor != NULL)
+		{
+			const CCI_ColoredBlobOmnidirectionalCameraSensor::SReadings &readings = m_pcOmnidirectionalCameraSensor->GetReadings();
+			m_pcRobotState->SetOmnidirectionalCameraInput(readings);
 		}
 
 		/*

@@ -15,7 +15,7 @@
 #include <argos3/core/control_interface/ci_controller.h>
 
 #include <argos3/demiurge/rvr-dao/RVRDAO.h>
-#include <argos3/demiurge/rvr-dao/ReferenceModel1Dot1.h>
+#include <argos3/demiurge/rvr-dao/ReferenceModel1Dot2.h>
 
 #include "./AutoMoDeFiniteStateMachine.h"
 #include "./AutoMoDeFsmBuilder.h"
@@ -25,6 +25,7 @@
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_lidar_sensor.h>
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_light_sensor.h>
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_ground_color_sensor.h>
+#include <argos3/plugins/robots/generic/control_interface/ci_colored_blob_omnidirectional_camera_sensor.h>
 
 namespace argos
 {
@@ -148,6 +149,11 @@ namespace argos
 		 * Pointer to the robot ground sensor.
 		 */
 		CCI_RVRGroundColorSensor *m_pcGroundSensor;
+
+		/*
+		 * Pointer to the robot omnidirectional camera sensor.
+		 */
+		CCI_ColoredBlobOmnidirectionalCameraSensor *m_pcOmnidirectionalCameraSensor;
 
 		bool m_bFiniteStateMachineGiven;
 	};
