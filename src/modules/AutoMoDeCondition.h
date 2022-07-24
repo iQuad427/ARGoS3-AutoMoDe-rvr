@@ -12,6 +12,8 @@
 #define AUTOMODECONDITION_H
 
 #include <argos3/core/utility/math/vector2.h>
+#include <argos3/core/utility/math/vector3.h>
+#include <argos3/core/utility/math/general.h>
 #include <argos3/core/utility/logging/argos_log.h>
 
 #include <argos3/demiurge/rvr-dao/RVRDAO.h>
@@ -140,6 +142,16 @@ namespace argos
 		 * Returns a random value from a Bernoulli distribution.
 		 */
 		bool EvaluateBernoulliProbability(const Real &f_probability) const;
+
+		/*
+		 * Utility function. Converts an RGB color to the LaB color space.
+		 */
+		CVector3 ConvertRGBToLab(CColor c_rgb);
+
+		/*
+		 * Utility function. Computes the deltaE distance between 2 colors in the lab space.
+		 */
+		Real ComputeDeltaE(CColor c_color1, CColor c_color2);
 	};
 }
 
