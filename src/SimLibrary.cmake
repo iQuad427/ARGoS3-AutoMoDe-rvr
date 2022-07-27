@@ -10,8 +10,6 @@ set(AUTOMODE_HEADERS
 	core/AutoMoDeFsmHistory.h
 	# Behaviours
 	modules/AutoMoDeBehaviour.h
-	modules/AutoMoDeBehaviourAntiPhototaxis.h
-	modules/AutoMoDeBehaviourPhototaxis.h
 	modules/AutoMoDeBehaviourAttraction.h
 	modules/AutoMoDeBehaviourRepulsion.h
 	modules/AutoMoDeBehaviourStop.h
@@ -34,8 +32,6 @@ set(AUTOMODE_SOURCES
 	core/AutoMoDeFsmHistory.cpp
 	# Behaviours
 	modules/AutoMoDeBehaviour.cpp
-	modules/AutoMoDeBehaviourAntiPhototaxis.cpp
-	modules/AutoMoDeBehaviourPhototaxis.cpp
 	modules/AutoMoDeBehaviourAttraction.cpp
 	modules/AutoMoDeBehaviourRepulsion.cpp
 	modules/AutoMoDeBehaviourStop.cpp
