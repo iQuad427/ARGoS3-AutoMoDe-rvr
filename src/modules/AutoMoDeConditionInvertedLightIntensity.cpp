@@ -1,5 +1,5 @@
 /**
- * @file <src/modules/AutoMoDeConditionLightIntensity.cpp>
+ * @file <src/modules/AutoMoDeConditionInvertedLightIntensity.cpp>
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  *
@@ -8,7 +8,7 @@
  * @license MIT License
  */
 
-#include "AutoMoDeConditionLightIntensity.h"
+#include "AutoMoDeConditionInvertedLightIntensity.h"
 
 namespace argos
 {
@@ -16,20 +16,20 @@ namespace argos
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeConditionLightIntensity::AutoMoDeConditionLightIntensity()
+	AutoMoDeConditionInvertedLightIntensity::AutoMoDeConditionInvertedLightIntensity()
 	{
-		m_strLabel = "LightIntensity";
+		m_strLabel = "InvertedLightIntensity";
 	}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeConditionLightIntensity::~AutoMoDeConditionLightIntensity() {}
+	AutoMoDeConditionInvertedLightIntensity::~AutoMoDeConditionInvertedLightIntensity() {}
 
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeConditionLightIntensity::AutoMoDeConditionLightIntensity(AutoMoDeConditionLightIntensity *pc_condition)
+	AutoMoDeConditionInvertedLightIntensity::AutoMoDeConditionInvertedLightIntensity(AutoMoDeConditionInvertedLightIntensity *pc_condition)
 	{
 		m_strLabel = pc_condition->GetLabel();
 		m_unIndex = pc_condition->GetIndex();
@@ -43,32 +43,32 @@ namespace argos
 	/****************************************/
 	/****************************************/
 
-	AutoMoDeConditionLightIntensity *AutoMoDeConditionLightIntensity::Clone()
+	AutoMoDeConditionInvertedLightIntensity *AutoMoDeConditionInvertedLightIntensity::Clone()
 	{
-		return new AutoMoDeConditionLightIntensity(this);
+		return new AutoMoDeConditionInvertedLightIntensity(this);
 	}
 
 	/****************************************/
 	/****************************************/
 
-	bool AutoMoDeConditionLightIntensity::Verify()
+	bool AutoMoDeConditionInvertedLightIntensity::Verify()
 	{
 		UInt32 unLightIntensity = m_pcRobotDAO->GetLightReading().Value;
-		Real fProbability = (1 / (1 + exp(m_fParameterEta * ((int)m_unParameterXi - (int)unLightIntensity))));
+		Real fProbability = 1 - (1 / (1 + exp(m_fParameterEta * ((int)m_unParameterXi - (int)unLightIntensity))));
 		return EvaluateBernoulliProbability(fProbability);
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeConditionLightIntensity::Reset()
+	void AutoMoDeConditionInvertedLightIntensity::Reset()
 	{
 	}
 
 	/****************************************/
 	/****************************************/
 
-	void AutoMoDeConditionLightIntensity::Init()
+	void AutoMoDeConditionInvertedLightIntensity::Init()
 	{
 		std::map<std::string, Real>::iterator itEta = m_mapParameters.find("w");
 		std::map<std::string, Real>::iterator itXi = m_mapParameters.find("p");

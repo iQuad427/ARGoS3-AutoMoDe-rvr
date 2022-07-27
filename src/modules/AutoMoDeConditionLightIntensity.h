@@ -1,5 +1,5 @@
 /**
- * @file <src/modules/AutoMoDeConditionNeighborsCount.h>
+ * @file <src/modules/AutoMoDeConditionLightIntensity.h>
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  *
