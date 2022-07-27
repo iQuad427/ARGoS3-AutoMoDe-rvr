@@ -82,6 +82,7 @@ namespace argos
     {
         CColor ptColorPerceived = m_pcRobotDAO->GetGroundReading();
 
+        // is it not sensitive to noise ?
         if (ptColorPerceived == m_cColorParameter)
         {
             return EvaluateBernoulliProbability(m_fProbability);
