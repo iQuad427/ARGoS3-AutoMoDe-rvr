@@ -22,7 +22,8 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeConditionNeighborsCount.h
 	modules/AutoMoDeConditionInvertedNeighborsCount.h
 	modules/AutoMoDeConditionFixedProbability.h
-	modules/AutoMoDeConditionRedFloor.h)
+	modules/AutoMoDeConditionRedFloor.h
+	modules/AutoMoDeConditionProbColor.h)
 
 # Sources
 set(AUTOMODE_SOURCES
@@ -44,7 +45,8 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeConditionNeighborsCount.cpp
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
 	modules/AutoMoDeConditionFixedProbability.cpp
-	modules/AutoMoDeConditionRedFloor.cpp)
+	modules/AutoMoDeConditionRedFloor.cpp
+	modules/AutoMoDeConditionProbColor.cpp)
 
 
 add_library(automode SHARED ${AUTOMODE_HEADERS} ${AUTOMODE_SOURCES})

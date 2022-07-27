@@ -143,6 +143,8 @@ namespace argos
 		 */
 		bool EvaluateBernoulliProbability(const Real &f_probability) const;
 
+		CColor GetColorParameter(const UInt32 &un_value);
+
 		/*
 		 * Utility function. Converts an RGB color to the LaB color space.
 		 */
