@@ -22,7 +22,6 @@ set(AUTOMODE_HEADERS
 	modules/AutoMoDeConditionNeighborsCount.h
 	modules/AutoMoDeConditionInvertedNeighborsCount.h
 	modules/AutoMoDeConditionFixedProbability.h
-	modules/AutoMoDeConditionRedFloor.h
 	modules/AutoMoDeConditionProbColor.h
 	modules/AutoMoDeConditionLightIntensity.h
 	modules/AutoMoDeConditionInvertedLightIntensity.h
@@ -48,7 +47,6 @@ set(AUTOMODE_SOURCES
 	modules/AutoMoDeConditionNeighborsCount.cpp
 	modules/AutoMoDeConditionInvertedNeighborsCount.cpp
 	modules/AutoMoDeConditionFixedProbability.cpp
-	modules/AutoMoDeConditionRedFloor.cpp
 	modules/AutoMoDeConditionProbColor.cpp
 	modules/AutoMoDeConditionLightIntensity.cpp
 	modules/AutoMoDeConditionInvertedLightIntensity.cpp)
