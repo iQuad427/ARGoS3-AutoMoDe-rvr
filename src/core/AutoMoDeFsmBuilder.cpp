@@ -209,6 +209,15 @@ namespace argos
 			case 5:
 				cNewCondition = new AutoMoDeConditionFixedProbability();
 				break;
+			case 6:
+				cNewCondition = new AutoMoDeConditionLightIntensity();
+				break;
+			case 7:
+				cNewCondition = new AutoMoDeConditionInvertedLightIntensity();
+				break;
+			case 8:
+				cNewCondition = new AutoMoDeConditionProbColor();
+				break;
 			}
 
 			cNewCondition->SetOriginAndExtremity(un_initial_state_index, unToBehaviour);
