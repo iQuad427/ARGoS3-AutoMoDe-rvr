@@ -225,7 +225,7 @@ namespace argos
 			cNewCondition->SetIdentifier(unConditionIdentifier);
 
 			// Checking for parameters
-			std::string vecPossibleParameters[] = {"p", "w"};
+			std::string vecPossibleParameters[] = {"p", "w", "l"};
 			UInt8 unNumberPossibleParameters = sizeof(vecPossibleParameters) / sizeof(vecPossibleParameters[0]);
 			for (UInt8 i = 0; i < unNumberPossibleParameters; i++)
 			{
