@@ -14,10 +14,14 @@ function print_syntax() {
 function write_state() {
   INDEX=$1
   NB_TRANS=$2
-  echo "S$INDEX     \"--s$INDEX \"  c   (0,1,2,3,4,5) | as.numeric(NumStates)>$INDEX " >> ${TXT_FILE}
+  # 4 possible states
+  echo "S$INDEX     \"--s$INDEX \"  c   (0,1,2,3) | as.numeric(NumStates)>$INDEX " >> ${TXT_FILE}
+  # --rwm can appear in state 0
   echo "RWM$INDEX   \"--rwm$INDEX \"  i (1,100) | as.numeric(S$INDEX)==0" >> ${TXT_FILE}
-  echo "ATT$INDEX   \"--att$INDEX \"  r (1,5) | as.numeric(S$INDEX)==4" >> ${TXT_FILE}
-  echo "REP$INDEX   \"--rep$INDEX \"  r (1,5) | as.numeric(S$INDEX)==5" >> ${TXT_FILE}
+  # --att can appear in state 2
+  echo "ATT$INDEX   \"--att$INDEX \"  r (1,5) | as.numeric(S$INDEX)==2" >> ${TXT_FILE}
+  # --rep can appear in state 3
+  echo "REP$INDEX   \"--rep$INDEX \"  r (1,5) | as.numeric(S$INDEX)==3" >> ${TXT_FILE}
   if [ ${INDEX} == 0 ]; then
     echo "NumConnections$INDEX \"--n$INDEX \" i (1,$NB_TRANS) | as.numeric(NumStates)>1" >> ${TXT_FILE}
   else
@@ -30,12 +34,17 @@ function write_connection() {
   CONNECTION=$2
   create_range STATE
   echo "N${STATE}x$CONNECTION  \"--n${STATE}x$CONNECTION \" i   (0,3) | as.numeric(NumConnections$STATE)>$CONNECTION " >> ${TXT_FILE}
-  echo "C${STATE}x$CONNECTION  \"--c${STATE}x$CONNECTION \" c   (0,1,2,3,4,5) | as.numeric(NumConnections$STATE)>$CONNECTION " >> ${TXT_FILE}
-  echo "P${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" r   (0,1) | as.numeric(C${STATE}x$CONNECTION) %in% c(0,1,2,5) " >> ${TXT_FILE}
+  # 7 conditions in [0;6]
+  echo "C${STATE}x$CONNECTION  \"--c${STATE}x$CONNECTION \" c   (0,1,2,3,4,5,6) | as.numeric(NumConnections$STATE)>$CONNECTION " >> ${TXT_FILE}
+  # p as a probability in [0;1] exists in conditions 0,1,2,5 and 6
+  echo "P${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" r   (0,1) | as.numeric(C${STATE}x$CONNECTION) %in% c(0,1,2,5,6) " >> ${TXT_FILE}
+  # p as an integer in [0;10] and w as an real in [0;20] exists in conditions 3 and 4
   echo "B${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" i   (1,10) | as.numeric(C${STATE}x$CONNECTION)==3 " >> ${TXT_FILE}
   echo "W${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==3 " >> ${TXT_FILE}
   echo "BI${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" i   (1,10) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
   echo "WI${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
+  # l as a integer (color id) in [0;6] exists in condition 6
+  echo "L${STATE}x$CONNECTION  \"--l${STATE}x$CONNECTION \" i   (0,6) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
 }
 
 function create_range() {

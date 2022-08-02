@@ -209,13 +209,15 @@ namespace argos
 			case 5:
 				cNewCondition = new AutoMoDeConditionFixedProbability();
 				break;
+			/* current robot can not perceive light */
+			/*
 			case 6:
 				cNewCondition = new AutoMoDeConditionLightIntensity();
 				break;
 			case 7:
 				cNewCondition = new AutoMoDeConditionInvertedLightIntensity();
-				break;
-			case 8:
+				break;*/
+			case 6:
 				cNewCondition = new AutoMoDeConditionProbColor();
 				break;
 			}
