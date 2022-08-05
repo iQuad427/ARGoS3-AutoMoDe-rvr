@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/raptus/rvr-loop-functions/build/loop-functions/rvr-pow/grid-exploration/librvr_pow_grid_exploration_loopfunc.so"
-   label="grid_exploration_loop_functions">
+  <loop_functions library="/home/raptus/rvr-loop-functions/build/loop-functions/rvr-pow/color-aggregation/librvr_pow_color_aggregation_loopfunc.so"
+   label="color_aggregation_loop_functions">
     <params dist_radius="1.2" number_robots="5"/>
   </loop_functions>
 
