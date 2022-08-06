@@ -206,16 +206,20 @@ namespace argos
 			cColorParameter = CColor::GREEN;
 			break;
 		case 2:
-			cColorParameter = CColor::BLUE;
+			// blue physical patches
+			cColorParameter = CColor(0, 123, 194);
 			break;
 		case 3:
-			cColorParameter = CColor::RED;
+			// red physical patches
+			cColorParameter = CColor(228, 53, 64);
 			break;
 		case 4:
-			cColorParameter = CColor::YELLOW;
+			// yellow physical patches
+			cColorParameter = CColor(252, 238, 33);
 			break;
 		case 5:
-			cColorParameter = CColor::MAGENTA;
+			// purple physical patches
+			cColorParameter = CColor(126, 79, 154);
 			break;
 		case 6:
 			cColorParameter = CColor::CYAN;
