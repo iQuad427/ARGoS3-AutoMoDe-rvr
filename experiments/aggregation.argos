@@ -11,8 +11,8 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/raptus/rvr-loop-functions/build/loop-functions/rvr-pow/color-aggregation/librvr_pow_color_aggregation_loopfunc.so"
-   label="color_aggregation_loop_functions">
+  <loop_functions library="/home/raptus/rvr-loop-functions/build/loop-functions/rvr-pow/aggregation/librvr_pow_aggregation_loopfunc.so"
+   label="aggregation_one_spot_loop_functions">
     <params dist_radius="1.2" number_robots="5"/>
   </loop_functions>
 
@@ -32,7 +32,6 @@
         <rvr_light implementation="default" show_rays="false"/>
         <rvr_lidar implementation="default" show_rays="false"/>
         <rvr_ground implementation="rot_z_only"/>
-	      <rvr_ground implementation="rot_z_only" />
 	      <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false" />
       </sensors>
     <params fsm-config="--nstates 1 --s0 0 --rwm0 5" />
@@ -48,7 +47,7 @@
   <floor id="floor" source="loop_functions" pixels_per_meter="300"/>
 
   <!-- Change the light here -->
-  <light id="light" position="0,-4.25,0.75" orientation="0,0,0" color="yellow" intensity="5.0" medium="leds"/>
+  <light id="light" position="0,-4.25,0.75" orientation="0,0,0" color="yellow" intensity="5.0" medium="light"/>
 
   <!--Dodecagonal arena with side of length .66-->
   <box id="wall_1" size="0.01,.66,0.08" movable="false">
@@ -96,7 +95,7 @@
     <body orientation="0,0,0" position="0,-0.4,0" />
     <controller config="automode" />
   </rvr>
-  <!--<rvr id="rvr_02_40">
+  <rvr id="rvr_02_40">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
     <controller config="automode" />
   </rvr>
@@ -111,7 +110,7 @@
   <rvr id="rvr_05_55">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
     <controller config="automode" />
-  </rvr>-->
+  </rvr>
   </arena>
 
   <!-- ******************* -->
@@ -126,6 +125,7 @@
   <!-- ********* -->
   <media>
     <led id="leds"/>
+    <led id="light"/>
   </media>
 
   <!-- ***************** -->
