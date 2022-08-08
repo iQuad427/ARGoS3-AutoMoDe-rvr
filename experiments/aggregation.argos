@@ -5,7 +5,7 @@
   <!-- ************* -->
   <framework>
     <experiment length="120"
-                ticks_per_second="10" random_seed="1"/>
+                ticks_per_second="10" random_seed="0"/>
   </framework>
 
   <!-- ****************** -->
