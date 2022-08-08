@@ -116,6 +116,11 @@ namespace argos
 		bool m_bPrintReadableFsm;
 
 		/*
+		 * Flag that tells whether we are using the real robot or not.
+		 */
+		bool m_bRealRobot;
+
+		/*
 		 * The path to where the history shall be stored.
 		 */
 		std::string m_strHistoryFolder;
