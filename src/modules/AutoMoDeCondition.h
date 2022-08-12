@@ -145,15 +145,11 @@ namespace argos
 
 		CColor GetColorParameter(const UInt32 &un_value);
 
-		/*
-		 * Utility function. Converts an RGB color to the LaB color space.
-		 */
-		CVector3 ConvertRGBToLab(CColor c_rgb);
+		CColor Saturate(CColor pc_color);
 
-		/*
-		 * Utility function. Computes the deltaE distance between 2 colors in the lab space.
-		 */
-		Real ComputeDeltaE(CColor c_color1, CColor c_color2);
+		CColor GetClosestLabel(CColor pc_color);
+
+		void RGBtoHSV(const CColor &c_color, Real &f_h, Real &f_s, Real &f_v);
 	};
 }
 

@@ -68,7 +68,7 @@ namespace argos
 
   void AutoMoDeConditionGrayFloor::Init()
   {
-    m_fGroundThresholdRange.Set(0.1, 0.95);
+    m_fGroundThresholdRange.Set(0.1, 160.0);
     std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
     if (it != m_mapParameters.end())
     {

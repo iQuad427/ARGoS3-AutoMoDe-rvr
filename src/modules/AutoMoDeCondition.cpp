@@ -9,6 +9,7 @@
  */
 
 #include "AutoMoDeCondition.h"
+#include <limits>
 
 namespace argos
 {
@@ -132,51 +133,6 @@ namespace argos
 	/****************************************/
 	/****************************************/
 
-	CVector3 AutoMoDeCondition::ConvertRGBToLab(CColor c_rgb)
-	{
-		// lambda function to apply conditional cubic root in the XYZ to LAB algorithm
-		auto f_cubic_root = [](Real f_x) -> Real
-		{
-			if (f_x > 0.008856)
-				return pow(f_x, 1.0 / 3.0);
-			else
-				return 7.787 * f_x + 16.0 / 116.0;
-		};
-		// convert from linear RGB (not sRGB) to (CIE)XYZ
-		CVector3 cRGB = CVector3(c_rgb.GetRed() / 255.0f, c_rgb.GetGreen() / 255.0f, c_rgb.GetBlue() / 255.0f);
-		CVector3 cXYZ(0.0f, 0.0f, 0.0f);
-		// matrix multiplication
-		cXYZ.SetX(0.4124 * cRGB.GetX() + 0.3576 * cRGB.GetY() + 0.1805 * cRGB.GetZ());
-		cXYZ.SetY(0.2126 * cRGB.GetX() + 0.7152 * cRGB.GetY() + 0.0722 * cRGB.GetZ());
-		cXYZ.SetZ(0.0193 * cRGB.GetX() + 0.1192 * cRGB.GetY() + 0.9505 * cRGB.GetZ());
-		// convert from (CIE)XYZ to (CIE)Lab
-		CVector3 cLab(0.0f, 0.0f, 0.0f);
-		cLab.SetX(116.0f * f_cubic_root(cXYZ.GetX() / 0.9505) - 16.0f);
-		cLab.SetY(500.0f * (f_cubic_root(cXYZ.GetX() / 0.9505) - f_cubic_root(cXYZ.GetY() / 1.0)));
-		cLab.SetY(200.0f * (f_cubic_root(cXYZ.GetY() / 1.0) - f_cubic_root(cXYZ.GetZ() / 1.089)));
-		return cLab;
-	}
-
-	/****************************************/
-	/****************************************/
-
-	Real AutoMoDeCondition::ComputeDeltaE(CColor c_color1, CColor c_color2)
-	{
-		CVector3 cLab1 = ConvertRGBToLab(c_color1);
-		CVector3 cLab2 = ConvertRGBToLab(c_color2);
-		// compute the delta E between two colors in the LAB color space
-		Real fL1 = cLab1.GetX();
-		Real fA1 = cLab1.GetY();
-		Real fB1 = cLab1.GetZ();
-		Real fL2 = cLab2.GetX();
-		Real fA2 = cLab2.GetY();
-		Real fB2 = cLab2.GetZ();
-		return Sqrt(pow(fL1 - fL2, 2) + pow(fA1 - fA2, 2) + pow(fB1 - fB2, 2));
-	}
-
-	/****************************************/
-	/****************************************/
-
 	void AutoMoDeCondition::SetRobotDAO(RVRDAO *pc_robot_dao)
 	{
 		m_pcRobotDAO = pc_robot_dao;
@@ -200,34 +156,147 @@ namespace argos
 		switch (un_value)
 		{
 		case 0:
-			cColorParameter = CColor::BLACK;
-			break;
-		case 1:
 			cColorParameter = CColor::GREEN;
 			break;
-		case 2:
+		case 1:
 			// blue physical patches
-			cColorParameter = CColor(0, 123, 194);
+			cColorParameter = CColor::BLUE;
+			break;
+		case 2:
+			// red physical patches
+			cColorParameter = CColor::RED;
 			break;
 		case 3:
-			// red physical patches
-			cColorParameter = CColor(228, 53, 64);
-			break;
-		case 4:
 			// yellow physical patches
-			cColorParameter = CColor(252, 238, 33);
-			break;
-		case 5:
-			// purple physical patches
-			cColorParameter = CColor(126, 79, 154);
-			break;
-		case 6:
-			cColorParameter = CColor::CYAN;
+			cColorParameter = CColor::YELLOW;
 			break;
 		default:
 			cColorParameter = CColor::BLACK;
 		}
 		return cColorParameter;
+	}
+
+	CColor AutoMoDeCondition::Saturate(CColor pc_color)
+	{
+		CColor fSaturatedColor = CColor();
+		UInt8 cMaxChannelValue = pc_color.GetRed();
+		if (pc_color.GetGreen() > cMaxChannelValue)
+		{
+			cMaxChannelValue = pc_color.GetGreen();
+		}
+		if (pc_color.GetBlue() > cMaxChannelValue)
+		{
+			cMaxChannelValue = pc_color.GetBlue();
+		}
+		if (cMaxChannelValue <= 10)
+		{
+			return CColor::BLACK;
+		}
+		Real fFactor = 255.0 / cMaxChannelValue;
+		fSaturatedColor.SetRed(UInt8(pc_color.GetRed() * fFactor));
+		fSaturatedColor.SetGreen(UInt8(pc_color.GetGreen() * fFactor));
+		fSaturatedColor.SetBlue(UInt8(pc_color.GetBlue() * fFactor));
+		if (fSaturatedColor.GetRed() > 255)
+		{
+			fSaturatedColor.SetRed(255);
+		}
+		if (fSaturatedColor.GetGreen() > 255)
+		{
+			fSaturatedColor.SetGreen(255);
+		}
+		if (fSaturatedColor.GetBlue() > 255)
+		{
+			fSaturatedColor.SetBlue(255);
+		}
+		return fSaturatedColor;
+	}
+
+	/****************************************/
+	/****************************************/
+
+	CColor AutoMoDeCondition::GetClosestLabel(CColor pc_color)
+	{
+		CColor cClosestLabel = CColor::WHITE;
+		Real fMinDistance = std::numeric_limits<Real>::max();
+		Real f_h, f_s, f_v, f_h_current, f_s_current, f_v_current;
+		// store perceived color in f_h, f_s, f_v
+		RGBtoHSV(pc_color, f_h, f_s, f_v);
+		std::cout << "Hue of perceived color : " << f_h << std::endl;
+		for (UInt32 i = 0; i < 4; i++)
+		{
+			CColor cLabel = GetColorParameter(i);
+			RGBtoHSV(cLabel, f_h_current, f_s_current, f_v_current);
+			std::cout << "Color " << cLabel << " | ";
+			std::cout << "Hue " << f_h_current << std::endl;
+			Real fDistance = Abs(f_h - f_h_current);
+			std::cout << "Distance :" << fDistance << std::endl;
+			if (fDistance < fMinDistance && fDistance < 15 && Abs(f_s - f_s_current) < 0.2)
+			{
+				fMinDistance = fDistance;
+				cClosestLabel = cLabel;
+			}
+		}
+		return cClosestLabel;
+	}
+
+	void AutoMoDeCondition::RGBtoHSV(const CColor &c_color, Real &f_h, Real &f_s, Real &f_v)
+	{
+		// convert RGB to HSV
+		Real f_r = c_color.GetRed() / 255.0;
+		Real f_g = c_color.GetGreen() / 255.0;
+		Real f_b = c_color.GetBlue() / 255.0;
+		Real f_min = f_r;
+		if (f_g < f_min)
+		{
+			f_min = f_g;
+		}
+		if (f_b < f_min)
+		{
+			f_min = f_b;
+		}
+		Real f_max = f_r;
+		if (f_g > f_max)
+		{
+			f_max = f_g;
+		}
+		if (f_b > f_max)
+		{
+			f_max = f_b;
+		}
+		Real f_delta = f_max - f_min;
+		f_v = f_max;
+		if (f_max != 0)
+		{
+			f_s = f_delta / f_max;
+		}
+		else
+		{
+			f_s = 0;
+			f_h = 0;
+			f_v = 0;
+			return;
+		}
+		if (f_delta == 0)
+		{
+			f_h = 0;
+		}
+		else if (f_r == f_max)
+		{
+			f_h = (f_g - f_b) / f_delta;
+		}
+		else if (f_g == f_max)
+		{
+			f_h = 2 + (f_b - f_r) / f_delta;
+		}
+		else
+		{
+			f_h = 4 + (f_r - f_g) / f_delta;
+		}
+		f_h *= 60;
+		if (f_h < 0)
+		{
+			f_h += 360;
+		}
 	}
 
 }

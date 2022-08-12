@@ -68,7 +68,7 @@ namespace argos
 
 	void AutoMoDeConditionWhiteFloor::Init()
 	{
-		m_fGroundThreshold = 0.95;
+		m_fGroundThreshold = 220.0f;
 		std::map<std::string, Real>::iterator it = m_mapParameters.find("p");
 		if (it != m_mapParameters.end())
 		{

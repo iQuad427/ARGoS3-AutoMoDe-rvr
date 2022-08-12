@@ -30,6 +30,7 @@
 
 # build folder
 build/
+devel/
 .idea/
 .vscode/
 cmake-build*
