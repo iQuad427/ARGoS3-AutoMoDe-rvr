@@ -46,6 +46,7 @@ namespace argos
 	void AutoMoDeController::Init(TConfigurationNode &t_node)
 	{
 		// Parsing parameters
+		Real ptVelocity = m_pcRobotState->GetMaxVelocity();
 		try
 		{
 			GetNodeAttributeOrDefault(t_node, "fsm-config", m_strFsmConfiguration, m_strFsmConfiguration);
@@ -53,12 +54,13 @@ namespace argos
 			GetNodeAttributeOrDefault(t_node, "hist-folder", m_strHistoryFolder, m_strHistoryFolder);
 			GetNodeAttributeOrDefault(t_node, "readable", m_bPrintReadableFsm, m_bPrintReadableFsm);
 			GetNodeAttributeOrDefault(t_node, "real-robot", m_bRealRobot, m_bRealRobot);
+			GetNodeAttributeOrDefault(t_node, "velocity", ptVelocity, ptVelocity);
 		}
 		catch (CARGoSException &ex)
 		{
 			THROW_ARGOSEXCEPTION_NESTED("Error parsing <params>", ex);
 		}
-
+		m_pcRobotState->SetMaxVelocity(ptVelocity);
 		m_unRobotID = atoi(GetId().substr(5, 6).c_str());
 		m_pcRobotState->SetRobotIdentifier(m_unRobotID);
 
