@@ -43,8 +43,8 @@ function write_connection() {
   echo "W${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==3 " >> ${TXT_FILE}
   echo "BI${STATE}x$CONNECTION  \"--p${STATE}x$CONNECTION \" i   (1,10) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
   echo "WI${STATE}x$CONNECTION  \"--w${STATE}x$CONNECTION \" r   (0,20) | as.numeric(C${STATE}x$CONNECTION)==4 " >> ${TXT_FILE}
-  # l as a integer (color id) in [0;6] exists in condition 6
-  echo "L${STATE}x$CONNECTION  \"--l${STATE}x$CONNECTION \" i   (0,6) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
+  # l as a integer (color id) in [0;3] exists in condition 6
+  echo "L${STATE}x$CONNECTION  \"--l${STATE}x$CONNECTION \" i   (0,3) | as.numeric(C${STATE}x$CONNECTION)==6 " >> ${TXT_FILE}
 }
 
 function create_range() {
