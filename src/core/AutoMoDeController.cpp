@@ -100,7 +100,7 @@ namespace argos
 			m_pcLightSensor = GetSensor<CCI_RVRLightSensor>("rvr_light");
 			m_pcGroundSensor = GetSensor<CCI_RVRGroundColorSensor>("rvr_ground");
 			m_pcLidarSensor = GetSensor<CCI_RVRLidarSensor>("rvr_lidar");
-			m_pcOmnidirectionalCameraSensor = GetSensor<CCI_ColoredBlobOmnidirectionalCameraSensor>("colored_blob_omnidirectional_camera");
+			m_pcOmnidirectionalCameraSensor = GetSensor<CCI_RVRColoredBlobOmnidirectionalCameraSensor>("colored_blob_omnidirectional_camera");
 			m_pcOmnidirectionalCameraSensor->Enable();
 		}
 		catch (CARGoSException ex)
@@ -156,7 +156,7 @@ namespace argos
 			}
 			if (m_pcOmnidirectionalCameraSensor != NULL)
 			{
-				const CCI_ColoredBlobOmnidirectionalCameraSensor::SReadings &readings = m_pcOmnidirectionalCameraSensor->GetReadings();
+				const CCI_RVRColoredBlobOmnidirectionalCameraSensor::SReadings &readings = m_pcOmnidirectionalCameraSensor->GetReadings();
 				m_pcRobotState->SetOmnidirectionalCameraInput(readings);
 			}
 		}

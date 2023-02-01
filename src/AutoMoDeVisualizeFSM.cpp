@@ -23,7 +23,7 @@
 #include <argos3/core/utility/plugins/dynamic_loading.h>
 #include <argos3/core/simulator/argos_command_line_arg_parser.h>
 
-#include <argos3/demiurge/loop-functions/CoreLoopFunctions.h>
+#include <argos3/demiurge/loop-functions/RVRCoreLoopFunctions.h>
 
 #include "./core/AutoMoDeFiniteStateMachine.h"
 #include "./core/AutoMoDeFsmBuilder.h"
