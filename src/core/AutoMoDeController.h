@@ -26,6 +26,8 @@
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_light_sensor.h>
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_ground_color_sensor.h>
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_colored_blob_omnidirectional_camera_sensor.h>
+#include <argos3/plugins/robots/rvr/control_interface/ci_rvr_range_and_bearing_sensor.h>
+#include <argos3/plugins/robots/rvr/control_interface/ci_rvr_range_and_bearing_actuator.h>
 
 namespace argos
 {
@@ -135,6 +137,11 @@ namespace argos
 		 */
 		CCI_RVRWheelsActuator *m_pcWheelsActuator;
 
+        /*
+         * Pointer to the robot range-and-bearing actuator.
+         */
+        CCI_RVRRangeAndBearingActuator* m_pcRabActuator;
+
 		/*
 		 * Pointer to the robot proximity sensor.
 		 */
@@ -159,6 +166,11 @@ namespace argos
 		 * Pointer to the robot omnidirectional camera sensor.
 		 */
 		CCI_RVRColoredBlobOmnidirectionalCameraSensor *m_pcOmnidirectionalCameraSensor;
+
+        /*
+         * Pointer to the robot range-and-bearing sensor.
+         */
+        CCI_RVRRangeAndBearingSensor* m_pcRabSensor;
 
 		bool m_bFiniteStateMachineGiven;
 	};

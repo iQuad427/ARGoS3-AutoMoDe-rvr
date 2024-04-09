@@ -101,6 +101,7 @@ namespace argos
 			m_pcGroundSensor = GetSensor<CCI_RVRGroundColorSensor>("rvr_ground");
 			m_pcLidarSensor = GetSensor<CCI_RVRLidarSensor>("rvr_lidar");
 			m_pcOmnidirectionalCameraSensor = GetSensor<CCI_RVRColoredBlobOmnidirectionalCameraSensor>("colored_blob_omnidirectional_camera");
+            m_pcRabSensor = GetSensor<CCI_RVRRangeAndBearingSensor>("rvr_range_and_bearing");
 			m_pcOmnidirectionalCameraSensor->Enable();
 		}
 		catch (CARGoSException ex)
@@ -111,6 +112,7 @@ namespace argos
 		try
 		{
 			m_pcWheelsActuator = GetActuator<CCI_RVRWheelsActuator>("rvr_wheels");
+            m_pcRabActuator = GetActuator<CCI_RVRRangeAndBearingActuator>("rvr_range_and_bearing");
 		}
 		catch (CARGoSException ex)
 		{
@@ -159,6 +161,11 @@ namespace argos
 				const CCI_RVRColoredBlobOmnidirectionalCameraSensor::SReadings &readings = m_pcOmnidirectionalCameraSensor->GetReadings();
 				m_pcRobotState->SetOmnidirectionalCameraInput(readings);
 			}
+            if (m_pcRabSensor != NULL)
+            {
+                const CCI_RVRRangeAndBearingSensor::TPackets &packets = m_pcRabSensor->GetPackets();
+                m_pcRobotState->SetRangeAndBearingMessages(packets);
+            }
 		}
 
 		/*
@@ -181,6 +188,13 @@ namespace argos
 				m_pcWheelsActuator->SetLinearVelocity(m_pcRobotState->GetLeftWheelVelocity(), m_pcRobotState->GetRightWheelVelocity());
 			}
 		}
+
+        /*
+		 * 4. Update variables and sensors
+		 */
+        if (m_pcRabSensor != NULL) {
+            m_pcRabSensor->ClearPackets();
+        }
 
 		m_unTimeStep++;
 	}
@@ -228,6 +242,17 @@ namespace argos
 
 	void AutoMoDeController::InitializeActuation()
 	{
+        /*
+		 * Constantly send range-and-bearing messages containing the robot integer identifier.
+		 */
+        if (m_pcRabActuator != NULL) {
+            UInt8 data[4];
+            data[0] = m_unRobotID;
+            data[1] = 0;
+            data[2] = 0;
+            data[3] = 0;
+            m_pcRabActuator->SetData(data);
+        }
 	}
 
 	REGISTER_CONTROLLER(AutoMoDeController, "automode_controller");

@@ -56,14 +56,14 @@ namespace argos
 		CVector2 sRabVector(0, CRadians::ZERO);
 		CVector2 sProxVector(0, CRadians::ZERO);
 		CVector2 sResultVector(0, CRadians::ZERO);
-		auto cLidarReading = m_pcRobotDAO->GetAttractionVectorToNeighbors(m_unRepulsionParameter);
+        CCI_RVRRangeAndBearingSensor::SReceivedPacket cRabReading = m_pcRobotDAO->GetAttractionVectorToNeighbors(m_unRepulsionParameter);
 
-		if (cLidarReading.Value > 0.0f)
-		{
-			sRabVector = CVector2(cLidarReading.Value, cLidarReading.Angle);
-		}
+        if (cRabReading.Range > 0.0f) {
+            sRabVector = CVector2(cRabReading.Range, cRabReading.Bearing);
+        }
 
-		sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
+
+        sProxVector = CVector2(m_pcRobotDAO->GetProximityReading().Value, m_pcRobotDAO->GetProximityReading().Angle);
 		sResultVector = -m_unRepulsionParameter * sRabVector - 5 * sProxVector;
 
 		if (sResultVector.Length() < 0.1)
