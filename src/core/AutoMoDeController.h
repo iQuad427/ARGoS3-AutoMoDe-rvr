@@ -26,8 +26,26 @@
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_light_sensor.h>
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_ground_color_sensor.h>
 #include <argos3/plugins/robots/rvr/control_interface/ci_rvr_colored_blob_omnidirectional_camera_sensor.h>
-#include <argos3/plugins/robots/rvr/control_interface/ci_rvr_range_and_bearing_sensor.h>
-#include <argos3/plugins/robots/rvr/control_interface/ci_rvr_range_and_bearing_actuator.h>
+
+/* Definition of the range and bearing sensor */
+#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_sensor.h>
+#include <argos3/plugins/robots/generic/control_interface/ci_range_and_bearing_actuator.h>
+
+/* ROS dependencies */
+#include "ros/ros.h"
+#include <tri_msgs/Distance.h>
+#include <tri_msgs/Distances.h>
+
+// Include random number generator
+#include <argos3/core/utility/math/rng.h>
+
+// Define a type for the pair of floats
+typedef std::pair<float, float> DistanceFactorPair;
+
+typedef std::vector<DistanceFactorPair> DistanceTable;
+
+// Define a type for the distance matrix
+typedef std::vector<std::vector<DistanceFactorPair>> DistanceMatrix;
 
 namespace argos
 {
@@ -63,6 +81,16 @@ namespace argos
 		 *
 		 */
 		virtual void Destroy();
+
+        /*
+         * ROS related methods.
+         */
+        virtual void InitROS();
+
+        // TODO: allow for message of ROS to come back (with RaB information)
+        // static void CallbackROS(const morpho_msgs::RangeAndBearing::ConstPtr& msg);
+
+        virtual void ControlStepROS();
 
 		/*
 		 * Setter for the AutoMoDeFiniteStateMachine.
@@ -167,10 +195,30 @@ namespace argos
 		 */
 		CCI_RVRColoredBlobOmnidirectionalCameraSensor *m_pcOmnidirectionalCameraSensor;
 
-        /*
-         * Pointer to the robot range-and-bearing sensor.
-         */
-        CCI_RVRRangeAndBearingSensor* m_pcRabSensor;
+        // TODO: might want to put the code specific to UWB simulation in the DAO instead of here
+//        /*
+//         * Pointer to the robot range-and-bearing sensor.
+//         */
+//        CCI_RVRRangeAndBearingSensor* m_pcRabSensor;
+
+        /* Pointer to the range and bearing sensor and actuator */
+        CCI_RangeAndBearingSensor* m_pcRangeAndBearingSensor; // Receive messages
+        CCI_RangeAndBearingActuator* m_pcRangeAndBearingActuator; // Send messages
+
+        UInt16 m_unBandWidth; // allowed bandwidth for the range and bearing communication
+
+        DistanceMatrix m_distanceMatrix; // distance matrix for the range and bearing communication
+        DistanceTable m_distanceTable; // distance matrix for the range and bearing communication
+        int m_nRobots;
+
+        /* ROS Publisher */
+        ros::Publisher m_distancePublisher;
+        ros::Publisher m_distancesPublisher;
+//        ros::Subscriber m_directionSubscriber;
+
+        tri_msgs::Distance m_distanceMessage;
+        tri_msgs::Distances m_distancesMessage;
+//        morpho_msgs::Angle m_directionMessage;
 
 		bool m_bFiniteStateMachineGiven;
 	};
